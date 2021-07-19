@@ -17,7 +17,7 @@ const DUMMY_MEALS = [
 	},
 	{
 		id: "m3",
-		name: "Crudo",
+		name: "Crudo di Mare",
 		description: "A big platter of raw fish and sea food",
 		price: 20,
 	},
