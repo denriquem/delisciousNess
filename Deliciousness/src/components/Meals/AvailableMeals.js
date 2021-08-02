@@ -1,36 +1,34 @@
+import { useEffect, useState } from "react";
 import classes from "./AvailableMeals.module.css";
 import MealItem from "./MealItem/MealItem";
 import Card from "../UI/Card";
 
-const DUMMY_MEALS = [
-	{
-		id: "m1",
-		name: "Focaccia Barese",
-		description: "Straight from Bari Vecchia",
-		price: 4,
-	},
-	{
-		id: "m2",
-		name: "Panzerotto di Ricotta Forte",
-		description: "Deep fried mini pizza filled with Ricotta Forte",
-		price: 2,
-	},
-	{
-		id: "m3",
-		name: "Crudo di Mare",
-		description: "A big platter of raw fish and sea food",
-		price: 20,
-	},
-	{
-		id: "m4",
-		name: "Pizza Crudaiola",
-		description: "Pizza with rocket, tomotoes and ricotta marzotica",
-		price: 7,
-	},
-];
-
 const AvailableMeals = () => {
-	const mealsList = DUMMY_MEALS.map((meal) => (
+	const [meals, setMeals] = useState([]);
+
+	useEffect(() => {
+		const fetchMeals = async () => {
+			const response = await fetch(
+				"https://dmgproject1-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
+			).then();
+			const responseData = await response.json();
+
+			const loadedMeals = [];
+
+			for (const key in responseData) {
+				loadedMeals.push({
+					id: key,
+					name: responseData[key].name,
+					description: responseData[key].description,
+					price: responseData[key].price,
+				});
+			}
+			setMeals(loadedMeals);
+		};
+		fetchMeals();
+	}, []);
+
+	const mealsList = meals.map((meal) => (
 		<MealItem
 			id={meal.id}
 			key={meal.id}
